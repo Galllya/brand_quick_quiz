@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "499146835326",
+    "project_id": "brandquickquiz",
+    "storage_bucket": "brandquickquiz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:499146835326:android:60ac67a6d2b9363defdf2f",
+        "android_client_info": {
+          "package_name": "com.brandquickgame.quizplay"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC907RMOF9njwQK5b3XiymlfWf5nGBAZg0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
