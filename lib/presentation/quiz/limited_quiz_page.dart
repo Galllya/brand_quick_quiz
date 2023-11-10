@@ -32,11 +32,8 @@ class _LimitedQuizPageState extends State<LimitedQuizPage> {
   bool correct = false;
   bool wrong = false;
 
-  // BannerAd? _bannerAd;
   @override
   void initState() {
-    // _createBannerAd();
-
     sharedPreferences = context.read<SharedPreferences>();
     maxLimited = sharedPreferences.getInt("maxLimited") ?? 0;
     List<ItemModel> allItems = itemsAll;
@@ -91,26 +88,9 @@ class _LimitedQuizPageState extends State<LimitedQuizPage> {
     return value;
   }
 
-  // _createBannerAd() {
-  //   _bannerAd = BannerAd(
-  //     size: AdSize.banner,
-  //     adUnitId: AdMobService.bannerAdUnitId,
-  //     listener: AdMobService.bannerAdListener,
-  //     request: const AdRequest(),
-  //   )..load();
-  //   setState(() {});
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // bottomNavigationBar: _bannerAd == null
-      //     ? const SizedBox()
-      //     : Container(
-      //         margin: const EdgeInsets.only(bottom: 12),
-      //         height: 52,
-      //         child: AdWidget(ad: _bannerAd!),
-      //       ),
       appBar: const CustomAppBar(
         name: "limited game",
         showBack: true,

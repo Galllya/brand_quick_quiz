@@ -54,19 +54,11 @@ class _EndlessEndPageState extends State<EndlessEndPage> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 20),
                 child: ElevatedButton(
-                  onPressed: () => Navigator.of(context)
-                      .push(
-                        MaterialPageRoute(
-                          builder: (context) => const Ads(),
-                        ),
-                      )
-                      .then(
-                        (value) => Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => const HomePage(),
-                          ),
-                        ),
-                      ),
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const HomePage(),
+                    ),
+                  ),
                   child: const Text(
                     "Home",
                   ),
