@@ -1,5 +1,4 @@
 import 'package:brand_quick_quiz/presentation/home/home_page.dart';
-import 'package:brand_quick_quiz/presentation/widgets/ads.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';

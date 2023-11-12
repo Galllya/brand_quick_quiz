@@ -4,14 +4,12 @@ import 'dart:math';
 import 'package:brand_quick_quiz/data/brends.dart';
 import 'package:brand_quick_quiz/data/items.dart';
 import 'package:brand_quick_quiz/domain/item_model.dart';
+import 'package:brand_quick_quiz/mixin/admob_mixin.dart';
 import 'package:brand_quick_quiz/presentation/quiz/endless_end_page.dart';
-import 'package:brand_quick_quiz/presentation/quiz/limited_end_page.dart';
 import 'package:brand_quick_quiz/presentation/quiz/widgets/quiz_base.dart';
-import 'package:brand_quick_quiz/presentation/widgets/ads.dart';
 import 'package:brand_quick_quiz/presentation/widgets/custom_app_bar.dart';
 import 'package:brand_quick_quiz/style/colors.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
-import 'package:circular_countdown_timer/countdown_text_format.dart';
 import 'package:flutter/material.dart';
 import 'package:linear_progress_bar/linear_progress_bar.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +22,7 @@ class EndlessQuizPage extends StatefulWidget {
   State<EndlessQuizPage> createState() => _EndlessQuizPageState();
 }
 
-class _EndlessQuizPageState extends State<EndlessQuizPage> {
+class _EndlessQuizPageState extends State<EndlessQuizPage> with AdmobMixin {
   int maxEndLess = 0;
   late SharedPreferences sharedPreferences;
 
@@ -53,7 +51,7 @@ class _EndlessQuizPageState extends State<EndlessQuizPage> {
     sharedPreferences = context.read<SharedPreferences>();
     maxEndLess = sharedPreferences.getInt("maxEndLess") ?? 0;
     startTimer();
-
+    loadRewarded(AdIdKey.rewarded);
     createLevel(isCorrect: false, fromStart: true);
     super.initState();
   }
@@ -106,15 +104,16 @@ class _EndlessQuizPageState extends State<EndlessQuizPage> {
             flex: 3,
             child: ElevatedButton(
               onPressed: () async {
-                Navigator.of(context)
-                    .push(
-                  MaterialPageRoute(
-                    builder: (context) => const Ads(),
+                showDialog(
+                  context: context,
+                  builder: (context) => const Center(
+                    child: CircularProgressIndicator(),
                   ),
-                )
-                    .then((value) {
-                  Navigator.pop(context);
-
+                );
+                await showRewarded(AdIdKey.rewarded, callback: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                  loadRewarded(AdIdKey.rewarded);
                   setState(() {
                     lives = 1;
                     countDownController = CountDownController();
@@ -130,13 +129,28 @@ class _EndlessQuizPageState extends State<EndlessQuizPage> {
           Flexible(
             flex: 1,
             child: TextButton(
-              onPressed: () => Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EndlessEndPage(
-                      score: (score).toString(),
-                    ),
-                  )),
+              onPressed: () async {
+                showDialog(
+                  context: context,
+                  builder: (context) => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+                await loadAndShowInterstitial(
+                  AdIdKey.inter_quiz_end,
+                  callback: () {
+                    Navigator.of(context).pop();
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EndlessEndPage(
+                          score: (score).toString(),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
               child: const Text(
                 "Finish",
                 style: TextStyle(color: AppColors.mainColor),

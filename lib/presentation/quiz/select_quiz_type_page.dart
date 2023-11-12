@@ -1,5 +1,4 @@
 import 'package:brand_quick_quiz/presentation/quiz/limited_quiz_page.dart';
-import 'package:brand_quick_quiz/presentation/widgets/ads.dart';
 import 'package:flutter/material.dart';
 
 import 'endless_quiz_page.dart';

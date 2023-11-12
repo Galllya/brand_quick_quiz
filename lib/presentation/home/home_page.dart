@@ -1,14 +1,11 @@
+import 'package:brand_quick_quiz/mixin/admob_mixin.dart';
 import 'package:brand_quick_quiz/presentation/home/widgets/home_button.dart';
 import 'package:brand_quick_quiz/presentation/home/widgets/user_info.dart';
 import 'package:brand_quick_quiz/presentation/quiz/endless_quiz_page.dart';
 import 'package:brand_quick_quiz/presentation/quiz/limited_quiz_page.dart';
-import 'package:brand_quick_quiz/presentation/quiz/select_quiz_type_page.dart';
 import 'package:brand_quick_quiz/presentation/results/results_page.dart';
-import 'package:brand_quick_quiz/presentation/settings/settings_page.dart';
-import 'package:brand_quick_quiz/presentation/widgets/ads.dart';
 import 'package:brand_quick_quiz/presentation/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../leaderboard/leaderboard_page.dart';
@@ -20,7 +17,17 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with AdmobMixin {
+  @override
+  void initState() {
+    _init();
+    super.initState();
+  }
+
+  Future<void> _init() async {
+    await showAppOpen(AdIdKey.app_open);
+  }
+
   void openPage(Widget page) => Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => page,

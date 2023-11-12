@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:brand_quick_quiz/data/brends.dart';
 import 'package:brand_quick_quiz/data/items.dart';
 import 'package:brand_quick_quiz/domain/item_model.dart';
+import 'package:brand_quick_quiz/mixin/admob_mixin.dart';
 import 'package:brand_quick_quiz/presentation/quiz/limited_end_page.dart';
 import 'package:brand_quick_quiz/presentation/quiz/widgets/quiz_base.dart';
 import 'package:brand_quick_quiz/presentation/widgets/custom_app_bar.dart';
@@ -18,7 +19,7 @@ class LimitedQuizPage extends StatefulWidget {
   State<LimitedQuizPage> createState() => _LimitedQuizPageState();
 }
 
-class _LimitedQuizPageState extends State<LimitedQuizPage> {
+class _LimitedQuizPageState extends State<LimitedQuizPage> with AdmobMixin {
   late SharedPreferences sharedPreferences;
   int maxLimited = 0;
   int maxItems = 10;
@@ -43,10 +44,10 @@ class _LimitedQuizPageState extends State<LimitedQuizPage> {
     super.initState();
   }
 
-  void createLevel({
+  Future<void> createLevel({
     required bool isCorrect,
     bool fromStart = false,
-  }) {
+  }) async {
     if (isCorrect) {
       score++;
       correct = true;
@@ -66,12 +67,24 @@ class _LimitedQuizPageState extends State<LimitedQuizPage> {
       });
     }
     if (currentIndex == maxItems - 1) {
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => LimitedEndPage(
-          maxResult: maxItems,
-          result: score,
+      showDialog(
+        context: context,
+        builder: (context) => const Center(
+          child: CircularProgressIndicator(),
         ),
-      ));
+      );
+      await loadAndShowInterstitial(
+        AdIdKey.inter_quiz_end,
+        callback: () {
+          Navigator.of(context).pop();
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => LimitedEndPage(
+              maxResult: maxItems,
+              result: score,
+            ),
+          ));
+        },
+      );
     } else {
       currentIndex++;
       correctInTop = Random().nextInt(2) == 1;
